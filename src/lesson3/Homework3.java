@@ -1,5 +1,5 @@
 package lesson3;
-public class homework3 {
+public class Homework3 {
     public static void main(String[] args) {
         int[] array1 = {0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1};
         printArray(array1);
