@@ -4,7 +4,6 @@ public class homework3 {
         int[] array1 = {0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1};
 
     }
-
     //1 задание
     public static void printArray(int[] inputArray) {
         for (int i = 0; i < inputArray.length; i++) {
@@ -12,13 +11,13 @@ public class homework3 {
         }
         System.out.println();
     }
-
     public static void change(int[] array) {
         for (int i = 0; i < array.length; i++) {
             array[i] = 1 - array[i];
         }
     }
 }
+
 
 //2 задание
 //public static void fillIn(int[] array) {
