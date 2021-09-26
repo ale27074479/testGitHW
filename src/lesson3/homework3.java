@@ -2,9 +2,9 @@ package lesson3;
 public class homework3 {
 public static void main(String[] args) {
     int[] array1 = { 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1 };
-    printArray1("1. Before:", array1);
+    System.out.println("Before: " + Arrays.toString(array1));
     change(array1);
-    printArray1("2. After:", array1); }
+    System.out.println("After: " + Arrays.toString(array1));
 }
 //1 задание
 public static void printArray1( int[] inputArray) {
