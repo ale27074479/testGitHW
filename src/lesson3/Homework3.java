@@ -10,7 +10,11 @@ public class Homework3 {
         fillIn(array2);
         printArray(array2);
         System.out.println("$$$$$$$@@@@@@");
-
+        int[] array3 = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
+        printArray( array3);
+        doubling( array3);
+        printArray( array3);
+        System.out.println("$$$$$$$@@@@@@");
     }
     //1 задание
     public static void printArray(int[] inputArray) {
@@ -32,3 +36,11 @@ public static void fillIn(int[] array2) {
         array2[i] = i + 1;
 }
 }
+
+
+//3 задание
+public static void doubling(int[] array){
+        for(int i=0;i<array3.length;i++)
+        if(array[i]< 6)
+        array3[i]*=2;
+        }
