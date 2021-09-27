@@ -15,10 +15,10 @@ public class Homework3 {
         doubling(array3);
         printArray(array3);
         System.out.println("$$$$$$$@@@@@@");
-        int side = 15;
+        int side = 20;
         int[][] array4 = new int[side][side];
         crossFill(array4);
-        printArray(аrray4);
+        printArray(array4 );
         int[] returnArrayFromMethod = returnArray(7, 777);
         printArray( returnArrayFromMethod);
         printArray( array3);
@@ -52,12 +52,18 @@ public static void doubling(int[] array3){
         array3[i]*=2;
         }
 //4 задание
-public static void crossFill(int[][] array4) {
-    for (int i = 0; i < array4.length; i++) {
-        array4[i][i] = 1;
-        array4[i][array4.length - 1 - i] = 1;
+ public static void crossFill(int[][] array4) {
+ for (int i = 0; i < array4.length; i++) {
+  array4[i][i] = 1;
+  array4[i][array4.length - 1 - i] = 1;
+        }
     }
-}
+ public static void printArray(int[][] array4) {
+    for(i = 0; i < array4.length, i++) {
+    printArray(array4[4]);
+        }
+    }
+
 //5 задание
 public static int[] returnArray(int len, int initValue) {
     int[] tempArray = new int[len];
@@ -86,6 +92,9 @@ private static int findMin(int[] array) {
         }
         return max;
     }
+
+//7 задание
+
 }
 
 
