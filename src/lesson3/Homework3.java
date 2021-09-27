@@ -24,7 +24,10 @@ public class Homework3 {
         printArray( array3);
         System.out.println(" Min: " + findMin(array3));
         System.out.println(" Max: " + findMax(array3));
-    }
+        int[] balance = {2, 2, 2, 3, 1, 10};
+        System.out.println (checkBalance(balance));
+
+        }
 
     //1 задание
     public static void printArray(int[] inputArray) {
@@ -94,7 +97,17 @@ private static int findMin(int[] array) {
     }
 
 //7 задание
-
+private static boolean checkBalance(int[] array5) {
+    int right = 0, left = 0;
+    for (int i = 0; i < array5.length - 1; i++) {
+        left += array5[i];
+        for (int j = i + 1; j < array5.length; j++)
+            right += array5[j];
+        if (left == right) return true;
+        right = 0;
+    }
+    return false;
+}
 }
 
 
