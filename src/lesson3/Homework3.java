@@ -60,7 +60,7 @@ public static void doubling(int[] array3){
     }
  public static void printArray(int[][] array4) {
     for(i = 0; i < array4.length, i++) {
-    printArray(array4[4]);
+    printArray(array4[20]);
         }
     }
 
