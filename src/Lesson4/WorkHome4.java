@@ -1,6 +1,7 @@
 package Lesson4;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class WorkHome4 {
     public static Random random = new Random();
