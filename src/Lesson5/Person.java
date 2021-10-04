@@ -1,7 +1,7 @@
 package Lesson5;
 
 public class Person {
-    private static final int CURRENT_YEAR = 2021;
+    private static final int Current_year = 2021;
 
     private String surname;
     private String secondName;
@@ -29,7 +29,7 @@ public Person(String name,
     }
     //3
     int getAge() {
-        return CURRENT_YEAR - birthYear;
+        return Current_year - birthYear;
     }
     int getSalary() {
         return salary;
