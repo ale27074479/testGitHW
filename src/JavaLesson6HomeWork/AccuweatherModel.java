@@ -5,7 +5,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccuweatherModel implements WeatherModel {
@@ -22,6 +26,8 @@ public class AccuweatherModel implements WeatherModel {
     private static final String LOCATIONS = "locations";
     private static final String CITIES = "cities";
     private static final String AUTOCOMPLETE = "autocomplete";
+    private static final double d = 0.55;
+    private static final double c = 32;
 
     private static final OkHttpClient okHttpClient = new OkHttpClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -48,12 +54,33 @@ public class AccuweatherModel implements WeatherModel {
                 Response oneDayForecastResponse = okHttpClient.newCall(request).execute();
                 String weatherResponse = oneDayForecastResponse.body().string();
                 System.out.println(weatherResponse);
-                //TODO: сделать человекочитаемый вывод погоды. Выбрать параметры для вывода на свое усмотрение
-                //Например: Погода в городе Москва - 5 градусов по цельсию Expect showers late Monday night
-                //dataBaseRepository.saveWeatherToDataBase(new Weather()) - тут после парсинга добавляем данные в БД
+
+                try (PrintWriter out = new PrintWriter("weather.json")) {
+                    out.println(weatherResponse);
+                }
+                catch (Exception e){
+                    System.out.println("error" + e.toString());
+                }
+
+                String localDate = objectMapper.readTree(weatherResponse)
+                        .at("/DailyForecasts")
+                        .get(0).at("/Day/IconPhrase")
+                        .asText();
+
+                double temperature = objectMapper.readTree(weatherResponse).at("/DailyForecasts")
+                        .get(0)
+                        .at("/Temperature/Maximum/Value")
+                        .asDouble();
+
+                temperature = (temperature - c) * d;
+
+                System.out.println("Погода: " + localDate + " - " + (String.format("%.1f", temperature)) + "C");
+                Weather weather = new Weather(selectedCity, localDate, temperature);
+                dataBaseRepository.saveWeatherToDataBase(weather);
                 break;
-            case FIVE_DAYS:
-                HttpUrl httpUrl = new HttpUrl.Builder()
+
+               case FIVE_DAYS:
+                HttpUrl httpUrl5 = new HttpUrl.Builder()
                         .scheme(PROTOKOL)
                         .host(BASE_HOST)
                         .addPathSegment(FORECASTS)
@@ -63,19 +90,49 @@ public class AccuweatherModel implements WeatherModel {
                         .addPathSegment(detectCityKey(selectedCity))
                         .addQueryParameter(API_KEY_QUERY_PARAM, API_KEY)
                         .build();
-                Request request = new Request.Builder()
-                        .url(httpUrl)
+                Request request5 = new Request.Builder()
+                        .url(httpUrl5)
                         .build();
-                Response fiveDayForecastResponse = okHttpClient.newCall(request).execute();
-                String weatherResponse = fiveDayForecastResponse.body().string();
-                System.out.println(weatherResponse);
+                Response fiveDayForecastResponse = okHttpClient.newCall(request5).execute();
+                String weatherResponse5 = fiveDayForecastResponse.body().string();
+                System.out.println(weatherResponse5);
+                   try (PrintWriter out = new PrintWriter("weather5.json")) {
+                       out.println(weatherResponse5);
+                   }
+                   catch (Exception e){
+                       System.out.println("error" + e.toString());
+                   }
+                   List<Weather> myList = new ArrayList<>();
+                   for (int i = 0; i < 5; i++){
+                       String Date5 = objectMapper.readTree(weatherResponse5)
+                               .at("/DailyForecasts")
+                               .get(i).at("/EpochDate")
+                               .asText();
+
+                       String weatherText = objectMapper.readTree(weatherResponse5)
+                               .at("/DailyForecasts")
+                               .get(i).at("/Day/IconPhrase")
+                               .asText();
+                       double temperature5 = objectMapper.readTree(weatherResponse5).at("/DailyForecasts")
+                               .get(i)
+                               .at("/Temperature/Maximum/Value")
+                               .asDouble();
+                       temperature5 = (temperature5 - c) * d;
+                       int chislo = Integer.parseInt(Date5.trim());
+                       LocalDateTime dateTime = LocalDateTime.ofEpochSecond(chislo, 0, ZoneOffset.UTC);
+                       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE,MMMM d,yyyy h:mm,a", Locale.ENGLISH);
+                       String formattedDate = dateTime.format(formatter);
+                       myList.add(weather = new Weather(selectedCity, Date5, temperature5));
+                       System.out.println("Погода в " + selectedCity + " : " + formattedDate + " - " + weatherText + " - " + (String.format("%.1f", temperature5)) + "C");
+                   }
+                   dataBaseRepository.saveWeatherToDataBase(myList);
 
                 break;
         }
     }
    @Override
     public List<Weather> getSavedToDBWeather() {
-        return dataBaseRepository.getSavedToDBWeather();
+    return dataBaseRepository.getSavedToDBWeather();
     }
 
     private String detectCityKey(String selectCity) throws IOException {
