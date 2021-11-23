@@ -1,5 +1,16 @@
 package JavaLesson6HomeWork;
 
+import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class DataBaseRepository {private String insertWeather = "insert into weather (city, localdate, temperature) values (?, ?, ?)";
     private String getWeather = "select * from weather";
     private static final String DB_PATH = "jdbc:sqlite:geekbrains.db";
